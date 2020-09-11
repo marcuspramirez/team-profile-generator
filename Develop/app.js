@@ -17,15 +17,39 @@ const render = require("./lib/htmlRenderer");
 
 let members = [];
 
+// first question
 function newMember() {
-    inquirer.prompt({
+    inquirer.prompt([
+    {
         type: "list",
-        name: "Role",
+        name: "role",
         message: "Choose role",
-        choices: ["Manager", "Engineer", "Intern"]
+        choices: ["Manager", "Engineer", "Intern", "No more employees!"]
+    }
+    // Using switch instead of if statements to execute funtion depending on role choice
+    ]).then(answer => {
+        switch(answer.role) {
+            case 'Manager':  
+              addManager();
+              break;
+          
+            case 'Engineer':  
+              addEngineer();
+              break;                    
+              
+            case 'Intern':  
+              addIntern();
+              break
+          
+          
+            case 'No more employees!':
+              createTeam();
+              break;
+          }
 
-    })
-}
+
+
+})
 
 
 
