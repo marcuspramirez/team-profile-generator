@@ -4,6 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const open = require('open');
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -24,7 +25,7 @@ function newMember() {
             type: "list",
             name: "role",
             message: "Choose role",
-            choices: ["Manager", "Engineer", "Intern", "No more employees!"]
+            choices: ["Manager", "Engineer", "Intern", "Done"]
         }
         // Using switch instead of if statements to execute funtion depending on role choice
     ]).then(answer => {
@@ -42,8 +43,8 @@ function newMember() {
                 break
 
 
-            case 'No more employees!':
-                createTeam();
+            case 'Done':
+                buildTeam();
                 break;
         }
 
@@ -60,7 +61,7 @@ function addManager() {
         },
         {
             type: 'input',
-            name: 'managerId?',
+            name: 'managerId',
             message: 'What their ID number?',
         },
         {
@@ -72,10 +73,16 @@ function addManager() {
             type: 'input',
             name: 'managerOfficeNumber',
             message: 'What is their office number?',
-        },
+        }
+    ]).then(userChoice => {
+        const manager = new Manager(userChoice.managerName, userChoice.managerId, userChoice.managerEmail, userChoice.managerOfficeNumber)
 
-    ]);
+        members.push(manager)
+
+        newMember()
+    })
 }
+
 
 function addEngineer() {
     inquirer.prompt([
@@ -86,7 +93,7 @@ function addEngineer() {
         },
         {
             type: 'input',
-            name: 'engineerId?',
+            name: 'engineerId',
             message: 'What is their ID number?',
         },
         {
@@ -98,9 +105,57 @@ function addEngineer() {
             type: 'input',
             name: 'engineerGithub',
             message: 'What is their GitHub name?',
-        },
+        }
 
-    ]);
+
+    ]).then(userChoice => {
+        const engineer = new Engineer(userChoice.engineerName, userChoice.engineerId, userChoice.engineerEmail, userChoice.engineerGithub)
+
+        members.push(engineer)
+
+        newMember()
+    })
+}
+
+function addIntern() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'internName',
+            message: 'What is the interns name?',
+        },
+        {
+            type: 'input',
+            name: 'internId',
+            message: 'What is their ID number?',
+        },
+        {
+            type: 'input',
+            name: 'internEmail',
+            message: 'What is their email address?',
+        },
+        {
+            type: 'input',
+            name: 'internSchool',
+            message: 'Where did they graduate?',
+        }
+
+    ]).then(userChoice => {
+        const intern = new Intern(userChoice.internName, userChoice.internId, userChoice.internEmail, userChoice.internSchool)
+
+        members.push(intern)
+
+        newMember()
+    })
+}
+
+
+function buildTeam(){
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, render(members), "utf-8");
+    open(outputPath);
 }
 
 
