@@ -1,0 +1,12 @@
+#box {
+    background-color: blue;
+}
+
+body {
+    background-color: cadetblue;
+}
+
+#card {
+    margin: 15px;
+    padding: 50px;
+}
