@@ -20,36 +20,91 @@ let members = [];
 // first question
 function newMember() {
     inquirer.prompt([
-    {
-        type: "list",
-        name: "role",
-        message: "Choose role",
-        choices: ["Manager", "Engineer", "Intern", "No more employees!"]
-    }
-    // Using switch instead of if statements to execute funtion depending on role choice
+        {
+            type: "list",
+            name: "role",
+            message: "Choose role",
+            choices: ["Manager", "Engineer", "Intern", "No more employees!"]
+        }
+        // Using switch instead of if statements to execute funtion depending on role choice
     ]).then(answer => {
-        switch(answer.role) {
-            case 'Manager':  
-              addManager();
-              break;
-          
-            case 'Engineer':  
-              addEngineer();
-              break;                    
-              
-            case 'Intern':  
-              addIntern();
-              break
-          
-          
+        switch (answer.role) {
+            case 'Manager':
+                addManager();
+                break;
+
+            case 'Engineer':
+                addEngineer();
+                break;
+
+            case 'Intern':
+                addIntern();
+                break
+
+
             case 'No more employees!':
-              createTeam();
-              break;
-          }
+                createTeam();
+                break;
+        }
+
+    }
+    )
+}
+
+function addManager() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'managerName',
+            message: 'What is the managers name?',
+        },
+        {
+            type: 'input',
+            name: 'managerId?',
+            message: 'What their ID number?',
+        },
+        {
+            type: 'input',
+            name: 'managerEmail',
+            message: 'What is their email address?',
+        },
+        {
+            type: 'input',
+            name: 'managerOfficeNumber',
+            message: 'What is their office number?',
+        },
+
+    ]);
+}
+
+function addEngineer() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'engineerName',
+            message: 'What is the engineers name?',
+        },
+        {
+            type: 'input',
+            name: 'engineerId?',
+            message: 'What is their ID number?',
+        },
+        {
+            type: 'input',
+            name: 'engineerEmail',
+            message: 'What is their email address?',
+        },
+        {
+            type: 'input',
+            name: 'engineerGithub',
+            message: 'What is their GitHub name?',
+        },
+
+    ]);
+}
 
 
-
-})
+newMember()
 
 
 
